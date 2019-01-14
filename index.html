@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="assets/javascript/main.js"></script>
+
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="row">
+        <form>
+            <label for='searchTerm'>Search Term:</label>
+            <input type="text" id='searchTerm' value="">
+            <input type="submit" id='add-searchTerm' value="Search">
+        </form>
+    </div>
+    <div class="row">
+        <p id="button-dump"></p>
+    </div>
+    <div class="row" id="gif-dump">
+    </div>
+</body>
+
+<script>
+    
+    //api key
+    let api_Key = "yO9K88VoPrdjUH8vRA379FOR9vjtos3a";
+    //counter for variable button ID's
+    let buttonCounter = 1;
+    //repeat preventing array
+    let dontRepeat = [];
+    //static rating that will be changed to variable
+    let rating = "G";
+    //static url that will be changed to variable
+    let embed_url = "https://i.giphy.com/media/3ohzgD1wRxpvpkDCSI/giphy.webp";
+
+
+    //input on-click event
+    $("#add-searchTerm").on("click", function () {
+
+        //preventing reload
+        event.preventDefault();
+
+
+
+        //saving input
+        let usersSearchTerm = $("#searchTerm").val().toLowerCase().trim();
+
+        //conditional to prevent empty buttons 
+        if (usersSearchTerm !== '') {
+
+            //conditional to prevent repeat buttons            
+            if (!dontRepeat.includes(usersSearchTerm)) {
+
+                //removing current html elements
+                $("#gif-dump").html("");
+
+                //template string for buttons
+                $("#button-dump").append(`<button class="setSearchButton"
+                   type='button' id='button-${buttonCounter}' value='${usersSearchTerm}'>${usersSearchTerm}</button>`);
+
+                //pushing the search terms into array to prevent repeat buttons    
+                dontRepeat.push(usersSearchTerm);
+
+                //emptying search box
+                $("#searchTerm").val('');
+
+                //URL template that takes my API and users search and calls back 10 gifs with the G rating w/ the search term
+                let queryURL = `https://api.giphy.com/v1/gifs/search?api_key=${api_Key}&q=${usersSearchTerm}&limit=10&offset=0&rating=G&lang=en`
+
+                //ajax call to GET api data
+                $.ajax({ url: queryURL, method: "GET" }).then(response => {
+
+                    //destructuring api for cleaner calls
+                    let { data, images, fixed_width, fixed_width_still, url } = response;
+
+
+                    //for loop to append each of the gifs I think a forEach would be much better as it would match any number of calls and will change it to that eventually
+                    for (i = 0; i < 10; i++) {
+                        $("#gif-dump").prepend(`<span id="gif-${i}"> Rating: G <img src="${data[i].images.fixed_width.url}" /> </span>`)
+                    }
+                })
+                //iterating the counter only when it successfully adds a button and prepends gifs
+                buttonCounter++
+            }
+            else {
+                //todo make button glow
+                alert("Press the button, dummy");
+                $("#searchTerm").val('');
+            }
+
+        }
+
+
+
+    })
+
+    //allowing click events on dynamically generated html elements
+    $(document).on("click", ".setSearchButton", function () {
+
+        //pulling the value of the button
+        usersSearchTerm = $(this).val();
+
+        //emptying out the current gifs
+        $("#gif-dump").html("");
+
+        //query URL template
+        let queryURL = `https://api.giphy.com/v1/gifs/search?api_key=${api_Key}&q=${usersSearchTerm}&limit=10&offset=0&rating=G&lang=en`
+
+        //ajax call to GET api data
+        $.ajax({ url: queryURL, method: "GET" }).then(response => {
+
+            //destructuring api for cleaner calls
+            let { data, images, fixed_width, fixed_width_still, url } = response;
+
+
+            //for loop to append each of the gifs I think a forEach would be much better as it would match any number of calls and will change it to that eventually
+            for (i = 0; i < 10; i++) {
+                $("#gif-dump").prepend(`<span id="gif-${i}"> Rating: G <img src="${data[i].images.fixed_width.url}" /> </span>`)
+            }
+
+        })
+
+    })
+
+
+</script>
+
+</html>
