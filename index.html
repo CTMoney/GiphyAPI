@@ -90,13 +90,14 @@
                 //ajax call to GET api data
                 $.ajax({ url: queryURL, method: "GET" }).then(response => {
 
+                    console.log(response)
                     //destructuring api for cleaner calls
                     let { data, images, fixed_width, fixed_width_still, url } = response;
 
                     //for loop to append each of the gifs I think a forEach would be much better as it would match any number of calls and will change it to that eventually
                     for (i = 0; i < 30; i++) {
                         $("#gif-dump").prepend(`
-                            <img src="${data[i].images.fixed_width.url}" class="img-thumbnail" alt="...">
+                            <img src="${data[i].images.fixed_width.url}" class="img-thumbnail" data-still="${data[i].images.fixed_width_still.url}" data-moving="${data[i].images.fixed_width.url}" alt="...">
                         `)
                     }
                 })
@@ -137,13 +138,23 @@
             //for loop to append each of the gifs I think a forEach would be much better as it would match any number of calls and will change it to that eventually
             for (i = 0; i < 30; i++) {
                 $("#gif-dump").prepend(`
-                    <img src="${data[i].images.fixed_width.url}" class="img-thumbnail" alt="...">
+                    <img src="${data[i].images.fixed_width.url}" class="img-thumbnail" data-still="${data[i].images.fixed_width_still.url}" data-moving="${data[i].images.fixed_width.url}" alt="...">
                 `)
             }
         })
 
     })
 
+    $(document).on("click", ".img-thumbnail", function(){
+        if ($(this).attr("src") == $(this).attr("data-still")) {
+            let toggle_play = $(this).attr("data-moving");
+            $(this).attr("src", toggle_play);   
+        }
+        else if ($(this).attr("src") == $(this).attr("data-moving")) {
+            let toggle_stop = $(this).attr("data-still");
+            $(this).attr("src", toggle_stop);   
+        }      
+    })
 
 </script>
 
