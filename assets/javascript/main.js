@@ -9,7 +9,7 @@ const embed_url = "https://i.giphy.com/media/3ohzgD1wRxpvpkDCSI/giphy.webp";
 //default buttons
 const default_buttons = ["wow", "mind blown", "omg"];
 //dynamic upon refresh placeholder text with suggestions
-const placeholders = ["cats", "hamsters", "shock", "evil", "panic", "dogs", "80s", "dancing", "finger guns"];
+const placeholders = ["cats", "hamsters", "shock", "evil", "panic", "dogs", "80s", "dancing", "finger guns", "capybara"];
 
 //appending default buttons
 for (let i = 0; i < 3; i++) {
