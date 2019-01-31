@@ -1,21 +1,23 @@
 //api key
-let api_Key = "yO9K88VoPrdjUH8vRA379FOR9vjtos3a";
+const api_Key = "yO9K88VoPrdjUH8vRA379FOR9vjtos3a";
 //counter for variable button ID's
-let buttonCounter = 1;
+var buttonCounter = 1;
 //repeat preventing array
 let dontRepeat = [];
-//static rating that will be changed to variable 
-let rating = "G";
 //static url that will be changed to variable
-let embed_url = "https://i.giphy.com/media/3ohzgD1wRxpvpkDCSI/giphy.webp";
+const embed_url = "https://i.giphy.com/media/3ohzgD1wRxpvpkDCSI/giphy.webp";
 //default buttons
-let default_buttons = ["wow", "mind blown", "omg"];
+const default_buttons = ["wow", "mind blown", "omg"];
+//dynamic upon refresh placeholder text with suggestions
+const placeholders = ["cats", "hamsters", "shock", "evil", "panic", "dogs", "80s", "dancing", "finger guns"];
 
 //appending default buttons
 for (let i = 0; i < 3; i++) {
     $("#button-dump").append(`<button class="setSearchButton btn btn-light"
             type='button' id='button-${buttonCounter}' value='${default_buttons[i]}' style="margin-left: 5px; margin-top: 3px;">${default_buttons[i]}</button>`);
 }
+$("#searchTerm").attr("placeholder", `What to search for... "${placeholders[Math.floor(Math.random() * (placeholders.length - 1))]}"?`);
+
 
 //input on-click event
 $("#add-searchTerm").on("click", function () {
